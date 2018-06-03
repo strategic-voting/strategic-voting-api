@@ -61,6 +61,7 @@ functions:
     - http:
         path: notford/{postalcode}
         method: get
+        cors: true
         request:
           parameters:
             paths:
