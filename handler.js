@@ -1,7 +1,20 @@
 'use strict';
 
-module.exports.hello = (event, context, callback) => {
-  console.log(event); // Contains incoming request data (e.g., query params, headers and more)
+module.exports.notford = (event, context, callback) => {
+  let postalcodeRequest = event['pathParameters']['postalcode']
+  console.log(`Recieved postalcode: ${postalcodeRequest}`)
+  let postalcode = postalcodeRequest.toUpperCase().replace(/\s+/, '')
+  if (postalcode.match(/[A-Z]\d[A-Z]\d[A-Z]\d/) == null) {
+    const response = {
+      statusCode: 422,
+      headers: {
+        "x-custom-header" : "My Header Value",
+        "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
+        "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
+      }
+    };
+    callback(null, response);
+  }
 
   const response = {
     statusCode: 200,
@@ -10,7 +23,7 @@ module.exports.hello = (event, context, callback) => {
       "Access-Control-Allow-Origin" : "*", // Required for CORS support to work
       "Access-Control-Allow-Credentials" : true // Required for cookies, authorization headers with HTTPS
     },
-    body: JSON.stringify({ "message": "Hello World!" })
+    body: JSON.stringify({ "postalcode": postalcode })
   };
 
   callback(null, response);
