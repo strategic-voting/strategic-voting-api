@@ -14,6 +14,7 @@ module.exports.notford = (event, context, callback) => {
       }
     };
     callback(null, response);
+    return null;
   }
 
   const response = {
