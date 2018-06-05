@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "API Backend",
   "main": "handler.js",
-  "dependencies": {},
+  "dependencies": {
+    "request": "^2.87.0"
+  },
   "devDependencies": {
     "serverless-domain-manager": "^2.4.0"
   },
