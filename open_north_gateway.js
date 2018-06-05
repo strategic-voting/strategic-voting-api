@@ -22,13 +22,13 @@ module.exports = class OpenNorthGateway {
   }
 
   get_major_candidates(candidates) {
-    return candidates.filter(candidate => {
+    return candidates.filter((candidate) => {
       return MAJOR_PARTIES.includes(candidate['party_name']);
     });
   }
 
   filter_only_needed_info(candidates) {
-    return candidates.map(candidate => {
+    return candidates.map((candidate) => {
       return {
         name: candidate['name'],
         party: candidate['party_name'],

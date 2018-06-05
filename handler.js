@@ -21,7 +21,7 @@ module.exports.notford = (event, context, callback) => {
 
 
   let gateway = new OpenNorthGateway()
-  gateway.candidates_in_postalcode(postalcode, function(candidates) {
+  gateway.candidates_in_postalcode(postalcode, (candidates) => {
     const response = {
       statusCode: 200,
       headers: CORS_HEADERS,
