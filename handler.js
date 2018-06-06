@@ -1,6 +1,7 @@
 'use strict';
 
 let OpenNorthGateway = require('./open_north_gateway.js')
+let NotFordSelector = require('./not_ford_selector.js')
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*", // Required for CORS support to work
@@ -19,13 +20,15 @@ module.exports.notford = (event, context, callback) => {
     return null;
   }
 
-
-  let gateway = new OpenNorthGateway()
+  let gateway = new OpenNorthGateway();
+  let not_ford_selector = new NotFordSelector();
   gateway.candidates_in_postalcode(postalcode, (candidates) => {
+    let riding = candidates[0]['riding'];
+    let who_to_vote = not_ford_selector.who_to_vote_for(riding)
     const response = {
       statusCode: 200,
       headers: CORS_HEADERS,
-      body: JSON.stringify({ "candidates": candidates })
+      body: JSON.stringify({ "candidates": candidates, "vote": who_to_vote })
     };
 
     callback(null, response);
