@@ -1,6 +1,7 @@
 'use strict';
 
 let OpenNorthGateway = require('./open_north_gateway.js')
+let ElectionsOntarioGateway = require('./elections_ontario_gateway.js')
 let NotFordSelector = require('./not_ford_selector.js')
 
 const CORS_HEADERS = {
@@ -20,15 +21,15 @@ module.exports.notford = (event, context, callback) => {
     return null;
   }
 
+  let elections_on_gateway = new ElectionsOntarioGateway();
   let gateway = new OpenNorthGateway();
   let not_ford_selector = new NotFordSelector();
-  gateway.candidates_in_postalcode(postalcode, (candidates) => {
-    let riding = candidates[0]['riding'];
+  elections_on_gateway.postalcode_to_riding(postalcode, (riding) => {
     let who_to_vote = not_ford_selector.who_to_vote_for(riding)
     const response = {
       statusCode: 200,
       headers: CORS_HEADERS,
-      body: JSON.stringify({ "candidates": candidates, "vote": who_to_vote })
+      body: JSON.stringify({ "vote": who_to_vote, "riding": riding })
     };
 
     callback(null, response);
