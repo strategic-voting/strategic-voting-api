@@ -11,15 +11,21 @@ const short_to_long_party_name = {
 module.exports = class NotFordSelector {
   who_to_vote_for(riding) {
     let polling_for_riding = polling_data[riding];
-    let inverse_data = this.polling_as_key(polling_for_riding);
-    let sorted = this.sorted_polls(polling_for_riding);
-    let vote_party = '';
-    if (inverse_data[sorted[0]] == 'pc') {
-      vote_party = inverse_data[sorted[1]];
-    } else {
-      vote_party = inverse_data[sorted[0]];
-    }
+    let polling_without_pc = this.remove_pcs(polling_for_riding);
+    let inverse_data = this.polling_as_key(polling_without_pc);
+    let sorted = this.sorted_polls(polling_without_pc);
+    let vote_party = inverse_data[sorted[0]];
     return short_to_long_party_name[vote_party];
+  }
+
+  remove_pcs(riding_poll) {
+    let riding_without_pcs = {};
+    Object.keys(riding_poll).forEach((party) => {
+      if (party != 'pc') {
+        riding_without_pcs[party] = riding_poll[party];
+      }
+    });
+    return riding_without_pcs;
   }
 
   polling_as_key(riding_poll) {
